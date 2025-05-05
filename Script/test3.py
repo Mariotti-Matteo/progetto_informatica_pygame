@@ -15,11 +15,11 @@ todraw = pygame.sprite.Group()
 plats = pygame.sprite.Group()
 
 # Classe per la creazione delle piattaforme
-class Platform(pygame.sprite.Sprite):
+class Platform(pygame.sprite.Sprite):   
     def __init__(self, x, y, disappear=False):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((20, 20))
-        self.image.fill("white")
+        self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -144,9 +144,6 @@ def gravity(player):
 player1 = Player("red")
 player2 = Player("blue")
 proximity_blocks = build()
-proximity_blocks = build()
-
-build()
 
 # Ciclo di gioco
 while True:
