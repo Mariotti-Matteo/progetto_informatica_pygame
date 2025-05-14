@@ -45,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.x = 32
-        self.rect.y = 32
+        self.rect.y = 40
         todraw.add(self)
 
     def update(self):
@@ -133,6 +133,71 @@ class Lava(pygame.sprite.Sprite):
         player2.rect.x = 100  # Posizione iniziale del secondo giocatore
         player2.rect.y = 50
         return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
+    
+class Water(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("Blue")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        todraw.add(self)
+
+    def update(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def morte(self,):
+        player1.rect.x = 50  # Posizione iniziale del primo giocatore
+        player1.rect.y = 50
+        player2.rect.x = 100  # Posizione iniziale del secondo giocatore
+        player2.rect.y = 50
+        return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
+
+class Acid(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("Green")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        todraw.add(self)
+
+    def update(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def morte(self,):
+        player1.rect.x = 50  # Posizione iniziale del primo giocatore
+        player1.rect.y = 50
+        player2.rect.x = 100  # Posizione iniziale del secondo giocatore
+        player2.rect.y = 50
+        return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
+    
+class MovingPlatform(pygame.sprite.Sprite):
+    def __init__(self, x, y, max_x, min_x, velocity):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("White")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.max_x = max_x
+        self.min_x = min_x
+        self.velocity = velocity
+        self.back = 0
+        plats.add(self)
+    def update(self):    
+        if self.rect.x >= self.max_x:
+            self.back = 1
+        elif self.rect.x <= self.min_x:
+            self.back = 0
+
+        if self.back == 0:
+            self.rect.x += self.velocity
+        elif self.back == 1:
+            self.rect.x -= self.velocity
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
         
@@ -181,12 +246,14 @@ def build(level):
             elif c == 'L':
                 p = Lava(myx, myy)
                 lava.append(p)
-            # elif c == 'W':
-            #     p = Water(myx, myy)
-            #     acqua.append(p)
-            # elif c == 'A':
-            #     p = Acid(myx, myy)
-            #     acido.append(p)
+            elif c == 'W':
+                p = Water(myx, myy)
+                acqua.append(p)
+            elif c == 'A':
+                p = Acid(myx, myy)
+                acido.append(p)
+            elif c == 'M':
+                p = MovingPlatform(myx, myy, myx + 1000, myx, 1)
             
             myx += 50
         myy += 50
@@ -284,14 +351,28 @@ while True:
     plats.update()
 
     if porte and player1.rect.colliderect(porte[0].rect) and player2.rect.colliderect(porte[0].rect):
-        level, level_select, player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = wall[0].exit(level_select)
+        level, level_select, player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = porte[0].exit(level_select)
         plats.empty()
         todraw.empty()
         todraw.add(player1, player2)  # Riaggiungi i giocatori
-        wall, level = build(level)
+        porte, lave, acque, acidi, level = build(level)
     for lava in lave:
         if player2.rect.colliderect(lava.rect):
             player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = lava.morte()
+            plats.empty()
+            todraw.empty()
+            todraw.add(player1, player2)
+            porte, lave, acque, acidi, level = build(level)
+    for acqua in acque:
+        if player1.rect.colliderect(acqua.rect):
+            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acqua.morte()
+            plats.empty()
+            todraw.empty()
+            todraw.add(player1, player2)
+            porte, lave, acque, acidi, level = build(level)
+    for acido in acidi:
+        if player1.rect.colliderect(acido.rect) or player2.rect.colliderect(acido.rect):
+            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acido.morte()
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
