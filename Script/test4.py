@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import pygame
 from pygame.locals import *
-from sys import exit
+from sys import exit 
 
 # === Constants ===
 SCREEN_WIDTH = 640
