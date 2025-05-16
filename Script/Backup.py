@@ -70,40 +70,40 @@ class Door(pygame.sprite.Sprite):
         level_select += 1
         if level_select == 1:
             print("entrando livello 1")
-            level = level_selection.level1()
+            level, move = level_selection.level1()
         elif level_select == 2:
             print("entrando livello 2")
-            level = level_selection.level2()
+            level, move = level_selection.level2()
         elif level_select == 3:
             print("entrando livello 3")
-            level = level_selection.level3()
+            level, move = level_selection.level3()
         elif level_select == 4:
             print("entrando livello 4")
-            level = level_selection.level4()
+            level, move = level_selection.level4()
         elif level_select == 5:
             print("entrando livello 5")
-            level = level_selection.level5()
+            level, move = level_selection.level5()
         elif level_select == 6:
             print("entrando livello 6")
-            level = level_selection.level6()
+            level, move = level_selection.level6()
         elif level_select == 7:
             print("entrando livello 7")
-            level = level_selection.level7()
+            level, move = level_selection.level7()
         elif level_select == 8:
             print("entrando livello 8")
-            level = level_selection.level8()
+            level,move  = level_selection.level8()
         elif level_select == 9:
             print("entrando livello 9")
-            level = level_selection.level9()
+            level, move = level_selection.level9()
         elif level_select == 10:
             print("entrando livello 10")
-            level = level_selection.level10()
+            level, move = level_selection.level10()
         elif level_select == 11:
             print("entrando livello 11")
-            level = level_selection.level11()
+            level, move = level_selection.level11()
         elif level_select == 12:
             print("entrando livello 12")
-            level = level_selection.level12()
+            level, move = level_selection.level12()
         elif level_select > 12:
             pygame.quit()
             exit()
