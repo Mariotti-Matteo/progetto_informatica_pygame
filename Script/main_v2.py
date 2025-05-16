@@ -11,6 +11,13 @@ info = pygame.display.Info()
 screen_width, screen_height = info.current_w, info.current_h
 level_select = 1  # Selezione del livello (1 o 2)
 
+def spawnpoint(p1spawnpoint, p2spawnpoint):
+    player1.rect.x = p1spawnpoint[0]
+    player1.rect.y = p1spawnpoint[1]
+    player2.rect.x = p2spawnpoint[0]  
+    player2.rect.y = p2spawnpoint[1]
+    return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
+
 # Crea la finestra a schermo intero
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.NOFRAME)
 clock = pygame.time.Clock()
@@ -127,11 +134,11 @@ class Lava(pygame.sprite.Sprite):
     def update(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-    def morte(self,):
-        player1.rect.x = 50  # Posizione iniziale del primo giocatore
-        player1.rect.y = 50
-        player2.rect.x = 100  # Posizione iniziale del secondo giocatore
-        player2.rect.y = 50
+    def morte(self, p1spawnpoits, p2spawnpoits):
+        player1.rect.x = p1spawnpoits[0]
+        player1.rect.y = p1spawnpoits[1]
+        player2.rect.x = p2spawnpoits[0]  
+        player2.rect.y = p2spawnpoits[1]
         return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
     
 class Water(pygame.sprite.Sprite):
@@ -147,11 +154,11 @@ class Water(pygame.sprite.Sprite):
     def update(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-    def morte(self,):
-        player1.rect.x = 50  # Posizione iniziale del primo giocatore
-        player1.rect.y = 50
-        player2.rect.x = 100  # Posizione iniziale del secondo giocatore
-        player2.rect.y = 50
+    def morte(self, p1spawnpoits, p2spawnpoits):
+        player1.rect.x = p1spawnpoits[0]
+        player1.rect.y = p1spawnpoits[1]
+        player2.rect.x = p2spawnpoits[0]  
+        player2.rect.y = p2spawnpoits[1]
         return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
 
 class Acid(pygame.sprite.Sprite):
@@ -167,11 +174,11 @@ class Acid(pygame.sprite.Sprite):
     def update(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-    def morte(self,):
-        player1.rect.x = 50  # Posizione iniziale del primo giocatore
-        player1.rect.y = 50
-        player2.rect.x = 100  # Posizione iniziale del secondo giocatore
-        player2.rect.y = 50
+    def morte(self, p1spawnpoits, p2spawnpoits):
+        player1.rect.x = p1spawnpoits[0]
+        player1.rect.y = p1spawnpoits[1]
+        player2.rect.x = p2spawnpoits[0]  
+        player2.rect.y = p2spawnpoits[1]
         return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
     
 class MovingPlatform(pygame.sprite.Sprite):
@@ -242,6 +249,8 @@ def build(level, move):
     acqua = []
     acido = []
     mplats = []
+    p1spawnpoint = []
+    p2spawnpoint = []
     myx = 0
     myy = 0
     for r in level:
@@ -271,10 +280,16 @@ def build(level, move):
                 mplats.append(p)
             elif c == '?':
                 p = Inv_Platform(myx, myy)
+            elif c == "1":
+                p1spawnpoint.append(myx)
+                p1spawnpoint.append(myy)
+            elif c == "2":
+                p2spawnpoint.append(myx)
+                p2spawnpoint.append(myy)
             myx += 50
         myy += 50
         myx = 0
-    return door, lava, acqua, acido, mplats, level
+    return door, lava, acqua, acido, mplats, p1spawnpoint, p2spawnpoint, level
 
 # Simulazione di gravità
 def gravity(player):
@@ -282,15 +297,8 @@ def gravity(player):
         player.move_y += 0.2
 
 # Creiamo i due giocatori
-player1 = Player("red")
-player2 = Player("blue")
-player2.rect.x = 100  # Posizione iniziale del secondo giocatore
-player2.rect.y = 50
-player1.rect.x = 50  # Posizione iniziale del primo giocatore
-player1.rect.y = 50
 
 print(level_select)
-
 
 if level_select == 1:
     level, move = level_selection.level1()
@@ -317,8 +325,15 @@ elif level_select == 11:
 elif level_select == 12:
     level = level_selection.level12()
 
-porte, lave, acque, acidi, mplats, level = build(level, move)
+porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
 print(porte)
+
+player1 = Player("red")
+player2 = Player("blue")
+player2.rect.x = p2spawnpoits[0]  # Posizione iniziale del secondo giocatore
+player2.rect.y = p2spawnpoits[1]
+player1.rect.x = p1spawnpoits[0]  # Posizione iniziale del primo giocatore
+player1.rect.y = p1spawnpoits[1]
 
 # Ciclo di gioco
 while True:
@@ -370,29 +385,33 @@ while True:
         level, move, level_select, player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = porte[0].exit(level_select)
         plats.empty()
         todraw.empty()
+        porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
+        player1.rect.x = p1spawnpoits[0]
+        player1.rect.y = p1spawnpoits[1]
+        player2.rect.x = p2spawnpoits[0]
+        player2.rect.y = p2spawnpoits[1]
         todraw.add(player1, player2)  # Riaggiungi i giocatori
-        porte, lave, acque, acidi, mplats, level = build(level, move)
     for lava in lave:
         if player2.rect.colliderect(lava.rect):
-            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = lava.morte()
+            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = lava.morte(p1spawnpoits, p2spawnpoits)
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, level = build(level, move)
+            porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
     for acqua in acque:
         if player1.rect.colliderect(acqua.rect):
-            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acqua.morte()
+            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acqua.morte(p1spawnpoits, p2spawnpoits)
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, level = build(level, move)
+            porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
     for acido in acidi:
         if player1.rect.colliderect(acido.rect) or player2.rect.colliderect(acido.rect):
-            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acido.morte()
+            player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acido.morte(p1spawnpoits, p2spawnpoits)
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, level = build(level, move)
+            porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
         
     pygame.display.update()
     # Faccio in modo che il gioco non vada oltre i 60FPS
