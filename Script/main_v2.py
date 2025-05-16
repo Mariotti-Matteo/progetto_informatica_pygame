@@ -371,28 +371,28 @@ while True:
         plats.empty()
         todraw.empty()
         todraw.add(player1, player2)  # Riaggiungi i giocatori
-        porte, lave, acque, acidi, level = build(level)
+        porte, lave, acque, acidi, level = build(level, move)
     for lava in lave:
         if player2.rect.colliderect(lava.rect):
             player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = lava.morte()
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, level = build(level)
+            porte, lave, acque, acidi, level = build(level, move)
     for acqua in acque:
         if player1.rect.colliderect(acqua.rect):
             player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acqua.morte()
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, level = build(level)
+            porte, lave, acque, acidi, mplats, level = build(level, move)
     for acido in acidi:
         if player1.rect.colliderect(acido.rect) or player2.rect.colliderect(acido.rect):
             player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acido.morte()
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, level = build(level)
+            porte, lave, acque, acidi, mplats, level = build(level, move)
         
     pygame.display.update()
     # Faccio in modo che il gioco non vada oltre i 60FPS
