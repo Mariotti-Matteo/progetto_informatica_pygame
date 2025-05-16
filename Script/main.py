@@ -33,6 +33,21 @@ class Platform(pygame.sprite.Sprite):
     def update(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
+
+class Inv_Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("black")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        plats.add(self)
+
+    def update(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+
 # Classe giocatore
 class Player(pygame.sprite.Sprite):
     move_x = 0
@@ -239,6 +254,8 @@ def build(level):
                 pass
             elif c == '#':
                 p = Platform(myx, myy)
+            elif c == '?':
+                p = Inv_Platform(myx, myy)
             elif c == 'E':
                 p = Door(myx, myy)
                 door.append(p)
@@ -253,7 +270,7 @@ def build(level):
                 p = Acid(myx, myy)
                 acido.append(p)
             elif c == 'M':
-                p = MovingPlatform(myx, myy, myx + 1000, myx, 1)
+                p = MovingPlatform(myx, myy, myx + 800, myx, 1)
             
             myx += 50
         myy += 50
