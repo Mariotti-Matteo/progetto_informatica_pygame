@@ -264,6 +264,19 @@ class disappearing_Platform(pygame.sprite.Sprite):
         self.rect.y = -100
         plats.remove(self)
         todraw.remove(self)
+
+class drawn_Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("White")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        todraw.add(self)
+
+    def update(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
         
 
 # Le collisioni vengono calcolate separatamente sull'asse x ed y
@@ -298,7 +311,7 @@ def build(level, move):
     mplats = []
     p1spawnpoint = []
     p2spawnpoint = []
-    displat = []
+    # displat = []
     myx = 0
     myy = 0
     for r in level:
@@ -339,7 +352,10 @@ def build(level, move):
                 acido.append(p)
             elif c == "S":
                 p = disappearing_Platform(myx, myy)
-                displat.append(p)
+                # displat.append(p)
+            elif c == "D":
+                p = drawn_Platform(myx, myy)
+                # displat.append(p)
             myx += 50
         myy += 50
         myx = 0
