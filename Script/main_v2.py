@@ -181,6 +181,27 @@ class Acid(pygame.sprite.Sprite):
         player2.rect.y = p2spawnpoits[1]
         return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
     
+
+class Acid_Inv(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("Black")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        todraw.add(self)
+
+    def update(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def morte(self, p1spawnpoits, p2spawnpoits):
+        player1.rect.x = p1spawnpoits[0]
+        player1.rect.y = p1spawnpoits[1]
+        player2.rect.x = p2spawnpoits[0]  
+        player2.rect.y = p2spawnpoits[1]
+        return player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y
+    
 class MovingPlatform(pygame.sprite.Sprite):
     def __init__(self, x, y, max_x, min_x, velocity):
         pygame.sprite.Sprite.__init__(self)
@@ -286,6 +307,9 @@ def build(level, move):
             elif c == "2":
                 p2spawnpoint.append(myx)
                 p2spawnpoint.append(myy)
+            elif c == "I":
+                p = Acid_Inv(myx, myy)
+                acido.append(p)
             myx += 50
         myy += 50
         myx = 0
