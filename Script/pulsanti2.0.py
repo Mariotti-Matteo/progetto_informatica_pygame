@@ -109,3 +109,6 @@ for pulsante_rosso in pulsantirossi:
                     muroblu.sblocca()
             else:
                 muroblu.sbloccato = False
+
+return door, lava, acqua, acido, mplats, red_button, blue_button, red_walls, blue_walls, p1spawnpoint, p2spawnpoint, level
+porte, lave, acque, acidi, mplats, pulsantirossi, pulsantiblu, murirossi, muriblue, p1spawnpoits, p2spawnpoits, level = build(level, move)
