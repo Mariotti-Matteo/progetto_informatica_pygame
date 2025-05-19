@@ -415,4 +415,4 @@ while True:
         
     pygame.display.update()
     # Faccio in modo che il gioco non vada oltre i 60FPS
-    clock.tick(60)
+    clock.tick(90)
