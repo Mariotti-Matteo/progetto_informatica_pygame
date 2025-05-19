@@ -253,6 +253,10 @@ class disappearing_Platform(pygame.sprite.Sprite):
 
     def update(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
+        # Chiama scompari solo se un player è vicino (distanza < 60 pixel)
+        if (abs(self.rect.centerx - player1.rect.centerx) < 60 and abs(self.rect.centery - player1.rect.centery) < 60) or \
+           (abs(self.rect.centerx - player2.rect.centerx) < 60 and abs(self.rect.centery - player2.rect.centery) < 60):
+            self.scompari()
 
     def scompari(self):
         self.image.fill("black")
