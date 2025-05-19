@@ -455,7 +455,8 @@ def build(level, move):
             myx += 50
         myy += 50
         myx = 0
-    return door, lava, acqua, acido, mplats, p1spawnpoint, p2spawnpoint, level
+    return door, lava, acqua, acido, mplats, red_button, blue_button, red_walls, blue_walls, p1spawnpoint, p2spawnpoint, level
+
 
 # Simulazione di gravità
 def gravity(player):
@@ -491,7 +492,7 @@ elif level_select == 11:
 elif level_select == 12:
     level = level_selection.level12()
 
-porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
+porte, lave, acque, acidi, mplats, pulsantirossi, pulsantiblu, murirossi, muriblue, p1spawnpoits, p2spawnpoits, level = build(level, move)
 print(porte)
 
 player1 = Player("red")
@@ -563,22 +564,39 @@ while True:
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
+            porte, lave, acque, acidi, mplats, pulsantirossi, pulsantiblu, murirossi, muriblue, p1spawnpoits, p2spawnpoits, level = build(level, move)
     for acqua in acque:
         if player1.rect.colliderect(acqua.rect):
             player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acqua.morte(p1spawnpoits, p2spawnpoits)
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
+            porte, lave, acque, acidi, mplats, pulsantirossi, pulsantiblu, murirossi, muriblue, p1spawnpoits, p2spawnpoits, level = build(level, move)
     for acido in acidi:
         if player1.rect.colliderect(acido.rect) or player2.rect.colliderect(acido.rect):
             player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = acido.morte(p1spawnpoits, p2spawnpoits)
             plats.empty()
             todraw.empty()
             todraw.add(player1, player2)
-            porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
-        
+            porte, lave, acque, acidi, mplats, pulsantirossi, pulsantiblu, murirossi, muriblue, p1spawnpoits, p2spawnpoits, level = build(level, move)        
+    for pulsante_rosso in pulsantirossi:
+        if player1.rect.colliderect(pulsante_rosso.rect):
+            pulsante_rosso.pressione()
+            if pulsante_rosso.premuto == True:
+                for murorosso in murirossi:
+                    murorosso.sblocca()
+            else:
+                murorosso.sbloccato = False
+    for pulsante_blue in pulsantiblu:
+        if player2.rect.colliderect(pulsante_blue.rect):
+            pulsante_blue.pressione()
+            if pulsante_blue.premuto == True:
+                for muroblu in muriblue:
+                    muroblu.sblocca()
+            else:
+                muroblu.sbloccato = False   
+
+
     pygame.display.update()
     # Faccio in modo che il gioco non vada oltre i 60FPS
     clock.tick(90)
