@@ -552,7 +552,8 @@ while True:
         level, move, level_select, player1.rect.x, player1.rect.y, player2.rect.x, player2.rect.y = porte[0].exit(level_select)
         plats.empty()
         todraw.empty()
-        porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
+        porte, lave, acque, acidi, mplats, pulsantirossi, pulsantiblu, murirossi, muriblue, p1spawnpoits, p2spawnpoits, level = build(level, move)
+#       porte, lave, acque, acidi, mplats, p1spawnpoits, p2spawnpoits, level = build(level, move)
         player1.rect.x = p1spawnpoits[0]
         player1.rect.y = p1spawnpoits[1]
         player2.rect.x = p2spawnpoits[0]
@@ -587,6 +588,7 @@ while True:
                     murorosso.sblocca()
             else:
                 murorosso.sbloccato = False
+
     for pulsante_blue in pulsantiblu:
         if player2.rect.colliderect(pulsante_blue.rect):
             pulsante_blue.pressione()
