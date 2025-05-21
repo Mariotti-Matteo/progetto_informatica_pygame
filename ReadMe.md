@@ -27,7 +27,7 @@ Matteo Mariotti & Luca Viganò
 
 **Acido Invisibile**: Blocco/area invisibile che uccide sia il player 1 che il player 2
 
-**Piattaforme movemtni**: Blocco/serie di blocchi che si muovono avanti e indietro su un percorso specifico.
+**Piattaforme movimenti**: Blocco/serie di blocchi che si muovono avanti e indietro su un percorso specifico.
 
 **Pulsante**: Pulsante che apre le porte del propio rispettivo colore
 
